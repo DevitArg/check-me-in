@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  description: CheckMeIn API
+  version: 1.0.0
+  title: CheckMeIn API
+  contact:
+    email: godoy.lucas.e@gmail.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: checkMeIn
+  description: checking in/out table/business operations
+- name: whoAreThere
+  description: all users on a business operation
+
+paths:
+  /checkMe/in:
+    post:
+      tags:
+      - checkMeIn
+      summary: lets user check in on a business' table
+      operationId: userCheckin
+      description: lets user check in on a business' table
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: checkinWS
+        description: object that contains the info to check in users onto tables
+        schema:
+          $ref: '#/definitions/CheckinWS'
+      responses:
+        201:
+          description: user checked in
+          schema:
+            type: string
+        400:
+          description: invalid input, object invalid
+        409:
+          description: user already checked in
+  /checkMe/out/user/{userUuid}:
+    delete:
+      tags:
+      - checkMeIn
+      summary: lets users check out from business' table
+      operationId: userCheckOut
+      description: lets users check out from business' table
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: userUuid
+        in: path
+        description: User's UUID to checkout
+        required: true
+        type: string
+        format: uuid
+      responses:
+        201:
+          description: user checked out
+          schema:
+            type: string
+        400:
+          description: invalid input, object invalid
+        409:
+          description: user already checked in
+  /whoAreThere:
+    get:
+      tags:
+      - whoAreThere
+      summary: retrieves all users checked in on a business
+      operationId: whoAreThere
+      description: retrieves all users checked in on a business
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: these are the users that have been checked in
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CheckinWS'
+definitions:
+  CheckinWS:
+    type: object
+    required:
+    - userUuid
+    - tableUuid
+    properties:
+      userUuid:
+        type: string
+        format: uuid
+        example: 8b6f1638-c74c-11e7-abc4-cec278b6b50a
+      tableUuid:
+        type: string
+        format: uuid
+        example: b7904412-c74c-11e7-abc4-cec278b6b50a
+host: virtserver.swaggerhub.com
+schemes:
+ - https
+ - http
+# Added by API Auto Mocking Plugin
+basePath: "/checkMeIn/v1"
