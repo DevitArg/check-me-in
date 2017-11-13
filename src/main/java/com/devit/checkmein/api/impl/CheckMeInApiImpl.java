@@ -5,8 +5,6 @@ import com.devit.checkmein.api.model.CheckinWS;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 /**
  * @author Lucas.Godoy on 13/11/17.
  */
@@ -14,7 +12,7 @@ import java.util.UUID;
 public class CheckMeInApiImpl implements CheckMeApi {
 
 	@Override
-	public ResponseEntity<String> userCheckOut(UUID userUuid) {
+	public ResponseEntity<String> userCheckOut(String userId) {
 		return null;
 	}
 

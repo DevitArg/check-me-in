@@ -44,7 +44,7 @@ paths:
           description: invalid input, object invalid
         409:
           description: user already checked in
-  /checkMe/out/user/{userUuid}:
+  /checkMe/out/user/{userId}:
     delete:
       tags:
       - checkMeIn
@@ -56,12 +56,11 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: userUuid
+      - name: userId
         in: path
-        description: User's UUID to checkout
+        description: User's ID to checkout
         required: true
         type: string
-        format: uuid
       responses:
         201:
           description: user checked out
@@ -93,17 +92,13 @@ definitions:
   CheckinWS:
     type: object
     required:
-    - userUuid
-    - tableUuid
+    - userId
+    - tableId
     properties:
-      userUuid:
+      userId:
         type: string
-        format: uuid
-        example: 8b6f1638-c74c-11e7-abc4-cec278b6b50a
-      tableUuid:
+      tableId:
         type: string
-        format: uuid
-        example: b7904412-c74c-11e7-abc4-cec278b6b50a
 host: virtserver.swaggerhub.com
 schemes:
  - https
