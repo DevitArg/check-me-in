@@ -7,7 +7,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = { "io.swagger", "com.devit" })
+@ComponentScan(basePackages = {"io.swagger", "com.devit"})
 public class CheckMeInApplication {
 
 	public static void main(String[] args) {
