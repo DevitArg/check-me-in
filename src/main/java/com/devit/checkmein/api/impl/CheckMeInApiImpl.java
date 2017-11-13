@@ -1,9 +1,15 @@
 package com.devit.checkmein.api.impl;
 
 import com.devit.checkmein.api.CheckMeApi;
-import com.devit.checkmein.api.model.CheckinWS;
+import com.devit.checkmein.api.model.CheckInBean;
+import com.devit.checkmein.service.CheckMeInService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * @author Lucas.Godoy on 13/11/17.
@@ -11,14 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CheckMeInApiImpl implements CheckMeApi {
 
+	@Autowired
+	private CheckMeInService checkMeInService;
+
 	@Override
 	public ResponseEntity<String> userCheckOut(String userId) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<String> userCheckin(CheckinWS checkinWS) {
-		return null;
+	public ResponseEntity<CheckInBean> userCheckin(@Valid @RequestBody CheckInBean checkInBean) {
+		return new ResponseEntity<>(checkMeInService.checkInUser(checkInBean), HttpStatus.CREATED);
 	}
 
 }

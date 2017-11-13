@@ -31,15 +31,15 @@ paths:
       - application/json
       parameters:
       - in: body
-        name: checkinWS
+        name: checkInBean
         description: object that contains the info to check in users onto tables
         schema:
-          $ref: '#/definitions/CheckinWS'
+          $ref: '#/definitions/CheckInBean'
       responses:
         201:
           description: user checked in
           schema:
-            type: string
+            $ref: '#/definitions/CheckInBean'
         400:
           description: invalid input, object invalid
         409:
@@ -87,14 +87,16 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/CheckinWS'
+              $ref: '#/definitions/CheckInBean'
 definitions:
-  CheckinWS:
+  CheckInBean:
     type: object
     required:
     - userId
     - tableId
     properties:
+      id:
+        type: string
       userId:
         type: string
       tableId:
