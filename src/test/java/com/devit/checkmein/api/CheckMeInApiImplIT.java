@@ -4,7 +4,6 @@ import com.devit.checkmein.AbstractIT;
 import com.devit.checkmein.TestBuilderHelper;
 import com.devit.checkmein.api.exception.handler.ApiError;
 import com.devit.checkmein.api.model.CheckInBean;
-import com.devit.checkmein.persistense.repository.CheckInRepository;
 import com.devit.checkmein.service.CheckMeInService;
 import com.devit.checkmein.service.exception.UserAlreadyCheckedIn;
 import org.junit.Test;
