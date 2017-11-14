@@ -1,0 +1,22 @@
+version: '2.1'
+
+services:
+    check-me-in:
+        container_name: check-me-in
+        hostname: check-me-in
+        image: dev-it/check-me-in:latest
+        expose:
+            - 8080
+        ports:
+            - 8080:8080
+        networks:
+            - devit-network
+        environment:
+            - spring.profiles.active=docker
+        links:
+            - mongodb:mongodb
+        depends_on:
+            - mongodb
+        logging:
+            driver: json-file
+
