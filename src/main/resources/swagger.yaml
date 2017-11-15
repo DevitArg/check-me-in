@@ -44,7 +44,7 @@ paths:
           description: invalid input, object invalid
         409:
           description: user already checked in
-  /checkMe/out/user/{userId}:
+  /checkMe/out/id/{checkInId}:
     delete:
       tags:
       - checkMeIn
@@ -56,16 +56,16 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: userId
+      - name: checkInId
         in: path
-        description: User's ID to checkout
+        description: User's checkIn ID to deregister
         required: true
         type: string
       responses:
-        201:
+        200:
           description: user checked out
           schema:
-            type: string
+            $ref: '#/definitions/CheckInBean'
         400:
           description: invalid input, object invalid
         409:
@@ -101,6 +101,11 @@ definitions:
         type: string
       tableId:
         type: string
+      checkInStatus:
+          $ref: '#/definitions/CheckInStatus'
+  CheckInStatus:
+    type: string
+    enum: [ CHECKEDIN, CHECKEDOUT ]
 host: virtserver.swaggerhub.com
 schemes:
  - https

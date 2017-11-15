@@ -3,4 +3,5 @@
 
 # Matches all occurrences in all subdirectories
 **/*Controller.java
+**/*Exception.java
 **/*Swagger2SpringBoot.java

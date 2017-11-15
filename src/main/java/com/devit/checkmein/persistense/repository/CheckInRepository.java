@@ -12,4 +12,5 @@ public interface CheckInRepository extends MongoRepository<CheckInDocument, Stri
 
 	Optional<CheckInDocument> findByUserId(String userId);
 
+	Optional<CheckInDocument> findById(String id);
 }

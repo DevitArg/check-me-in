@@ -6,6 +6,7 @@ import com.devit.checkmein.service.CheckMeInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,8 @@ public class CheckMeInApiImpl implements CheckMeApi {
 	private CheckMeInService checkMeInService;
 
 	@Override
-	public ResponseEntity<String> userCheckOut(String userId) {
-		return null;
+	public ResponseEntity<CheckInBean> userCheckOut(@PathVariable("checkInId") String checkInId) {
+		return new ResponseEntity<>(checkMeInService.checkOutUser(checkInId), HttpStatus.OK);
 	}
 
 	@Override

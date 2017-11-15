@@ -1,5 +1,6 @@
 package com.devit.checkmein.persistense.document;
 
+import com.devit.checkmein.api.model.CheckInStatus;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,5 +17,6 @@ public class CheckInDocument {
 	private String userId;
 	@Indexed
 	private String tableId;
+	private CheckInStatus checkInStatus;
 
 }

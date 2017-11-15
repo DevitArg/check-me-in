@@ -1,6 +1,7 @@
 package com.devit.checkmein;
 
 import com.devit.checkmein.api.model.CheckInBean;
+import com.devit.checkmein.api.model.CheckInStatus;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 
@@ -12,6 +13,14 @@ public class TestBuilderHelper {
 	public static CheckInBean buildCheckInBeanNullId() {
 		CheckInBean nullId = random(CheckInBean.class);
 		nullId.setId(null);
+		nullId.setCheckInStatus(CheckInStatus.CHECKEDIN);
+		return nullId;
+	}
+
+	public static CheckInBean buildCheckInWithCheckedOutStatusBeanNullId() {
+		CheckInBean nullId = random(CheckInBean.class);
+		nullId.setId(null);
+		nullId.setCheckInStatus(CheckInStatus.CHECKEDOUT);
 		return nullId;
 	}
 

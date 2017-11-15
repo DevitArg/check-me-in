@@ -2,11 +2,16 @@ package com.devit.checkmein.com.devit.checkmein.service.impl;
 
 import com.devit.checkmein.AbstractIT;
 import com.devit.checkmein.TestBuilderHelper;
+import com.devit.checkmein.TestDBHelper;
+import com.devit.checkmein.api.exception.handler.NotFoundException;
 import com.devit.checkmein.api.model.CheckInBean;
+import com.devit.checkmein.api.model.CheckInStatus;
 import com.devit.checkmein.persistense.document.CheckInDocument;
 import com.devit.checkmein.persistense.repository.CheckInRepository;
 import com.devit.checkmein.service.exception.UserAlreadyCheckedIn;
+import com.devit.checkmein.service.exception.UserAlreadyCheckedOut;
 import com.devit.checkmein.service.impl.CheckMeInServiceImpl;
+import org.dozer.DozerBeanMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +28,9 @@ public class CheckMeInServiceImplIT extends AbstractIT {
 
 	@Autowired
 	private CheckInRepository checkInRepository;
+
+	@Autowired
+	private TestDBHelper testDBHelper;
 
 	@Test
 	public void checkInDocumentSavedSuccessfully_test() throws UserAlreadyCheckedIn {
@@ -43,6 +51,39 @@ public class CheckMeInServiceImplIT extends AbstractIT {
 		Throwable throwable = catchThrowable(() -> checkMeInService.checkInUser(null));
 
 		assertThat(throwable).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void checkOutUserWithNullCheckInIdFailure_test() {
+		Throwable throwable = catchThrowable(() -> checkMeInService.checkOutUser(null));
+
+		assertThat(throwable).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void checkOutUserWithInvalidCheckInIdFailure_test() {
+		Throwable throwable = catchThrowable(() -> checkMeInService.checkOutUser("SomeNonExistingId"));
+
+		assertThat(throwable).isInstanceOf(NotFoundException.class);
+	}
+
+	@Test
+	public void checkOutUserAlreadyCheckedOutFailure_test() {
+		final String checkInId = testDBHelper.saveCheckInAndGet(true).getId();
+
+		Throwable throwable = catchThrowable(() -> checkMeInService.checkOutUser(checkInId));
+
+		assertThat(throwable).isInstanceOf(UserAlreadyCheckedOut.class);
+	}
+
+	@Test
+	public void checkOutUserSuccessfully_test() {
+		final String checkInId = testDBHelper.saveCheckInAndGet(false).getId();
+
+		CheckInBean checkInBean = checkMeInService.checkOutUser(checkInId);
+
+		assertThat(checkInBean.getId()).isEqualTo(checkInId);
+		assertThat(checkInBean.getCheckInStatus()).isEqualTo(CheckInStatus.CHECKEDOUT);
 	}
 
 }
