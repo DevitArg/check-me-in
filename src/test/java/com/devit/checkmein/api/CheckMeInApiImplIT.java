@@ -24,6 +24,10 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class CheckMeInApiImplIT extends AbstractIT {
 
+	private final static String BASE_URI = "/checkMeIn/v1";
+	private final static String CHECK_ME_IN_URI = BASE_URI + "/checkMe/in";
+	private final static String CHECK_ME_OUT_URI = BASE_URI + "/checkMe/out/id/{checkInId}";
+
 	@Autowired
 	private CheckMeInService checkMeInService;
 
@@ -37,7 +41,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		CheckInBean response = given()
 				.body(requestBody)
 				.when()
-				.post("/checkMe/in")
+				.post(CHECK_ME_IN_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.CREATED.value()))
 				.extract().body().as(CheckInBean.class);
@@ -55,7 +59,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		ApiError apiError = given()
 				.body(requestBody)
 				.when()
-				.post("/checkMe/in")
+				.post(CHECK_ME_IN_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.CONFLICT.value()))
 				.extract().body().as(ApiError.class);
@@ -69,7 +73,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		given()
 				.body(requestBody)
 				.when()
-				.post("/checkMe/in")
+				.post(CHECK_ME_IN_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.BAD_REQUEST.value()));
 	}
@@ -82,7 +86,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		CheckInBean response = given()
 				.pathParam("checkInId", checkInBean.getId())
 				.when()
-				.delete("/checkMe/out/id/{checkInId}")
+				.delete(CHECK_ME_OUT_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.OK.value()))
 				.extract().body().as(CheckInBean.class);
@@ -98,7 +102,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		ApiError response = given()
 				.pathParam("checkInId", "nonExistingId")
 				.when()
-				.delete("/checkMe/out/id/{checkInId}")
+				.delete(CHECK_ME_OUT_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.NOT_FOUND.value()))
 				.extract().body().as(ApiError.class);
@@ -120,7 +124,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		ApiError response = given()
 				.pathParam("checkInId", checkInBean.getId())
 				.when()
-				.delete("/checkMe/out/id/{checkInId}")
+				.delete(CHECK_ME_OUT_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.CONFLICT.value()))
 				.extract().body().as(ApiError.class);

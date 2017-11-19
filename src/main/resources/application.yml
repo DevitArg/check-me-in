@@ -1,3 +1,6 @@
 mongo:
   config:
     type: EMBEDDED
+
+server:
+  contextPath: /checkMeIn/v1
