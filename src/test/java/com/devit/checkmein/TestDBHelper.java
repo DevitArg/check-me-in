@@ -28,4 +28,13 @@ public class TestDBHelper {
 		return document;
 	}
 
+	public void bulkCheckIn(int inCount, int outCount) {
+		for (int i = 0; i < inCount; i++) {
+			saveCheckInAndGet(false);
+		}
+		for (int i = 0; i < outCount; i++) {
+			saveCheckInAndGet(true);
+		}
+	}
+
 }

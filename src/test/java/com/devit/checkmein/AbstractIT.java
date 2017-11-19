@@ -1,14 +1,18 @@
 package com.devit.checkmein;
 
+import com.devit.checkmein.persistense.document.CheckInDocument;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.builder.RequestSpecBuilder;
 import com.jayway.restassured.builder.ResponseSpecBuilder;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.parsing.Parser;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,6 +25,9 @@ public abstract class AbstractIT {
 
 	@LocalServerPort
 	int serverPort;
+
+	@Autowired
+	protected MongoTemplate mongoTemplate;
 
 	@Before
 	public void setUp() {
@@ -37,6 +44,11 @@ public abstract class AbstractIT {
 		RestAssured.responseSpecification = new ResponseSpecBuilder()
 				.setDefaultParser(Parser.JSON)
 				.build();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		mongoTemplate.dropCollection(CheckInDocument.class);
 	}
 
 }
