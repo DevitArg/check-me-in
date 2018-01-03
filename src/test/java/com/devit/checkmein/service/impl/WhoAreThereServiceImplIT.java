@@ -1,4 +1,4 @@
-package com.devit.checkmein.com.devit.checkmein.service.impl;
+package com.devit.checkmein.service.impl;
 
 import com.devit.checkmein.AbstractIT;
 import com.devit.checkmein.TestDBHelper;

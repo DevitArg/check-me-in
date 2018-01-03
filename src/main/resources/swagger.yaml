@@ -106,6 +106,15 @@ definitions:
   CheckInStatus:
     type: string
     enum: [ CHECKEDIN, CHECKEDOUT ]
+  ErrorResponse:
+    type: object
+    properties:
+      httpStatus:
+        type: integer
+      message:
+        type: string
+      developerMessage:
+        type: string
 host: virtserver.swaggerhub.com
 schemes:
  - https

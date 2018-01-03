@@ -22,6 +22,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
+        <spring.fox.swagger.version>2.7.0</spring.fox.swagger.version>
+        <swagger.jaxrs.version>1.5.16</swagger.jaxrs.version>
+        <apache.cxf.starter.version>3.1.11</apache.cxf.starter.version>
+        <jackson.json.provider.version>2.8.6</jackson.json.provider.version>
+
         <docker.image.prefix>dev-it</docker.image.prefix>
     </properties>
 
@@ -70,19 +76,39 @@
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
+            <version>${apache.cxf.starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${jackson.json.provider.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.7.0</version>
+            <version>${spring.fox.swagger.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
+            <version>${spring.fox.swagger.version}</version>
         </dependency>
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.9</version>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+            <version>${swagger.jaxrs.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.dozer</groupId>
@@ -135,11 +161,18 @@
                         <configuration>
                             <inputSpec>src/main/resources/swagger.yaml</inputSpec>
                             <ignoreFileOverride>src/main/resources/.swagger-codegen-ignore</ignoreFileOverride>
-                            <language>spring</language>
+                            <language>jaxrs-cxf</language>
                             <apiPackage>com.devit.checkmein.api</apiPackage>
                             <modelPackage>com.devit.checkmein.api.model</modelPackage>
+                            <generateApiTests>false</generateApiTests>
                             <configOptions>
-                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <sourceFolder>src/main/java</sourceFolder>
+                                <useGenericResponse>true</useGenericResponse>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
+                                <useBeanValidation>true</useBeanValidation>
+                                <useBeanValidationFeature>true</useBeanValidationFeature>
+                                <useJaxbAnnotations>true</useJaxbAnnotations>
+                                <withXml>true</withXml>
                             </configOptions>
                         </configuration>
                     </execution>

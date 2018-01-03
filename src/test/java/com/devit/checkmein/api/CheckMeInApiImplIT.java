@@ -2,15 +2,12 @@ package com.devit.checkmein.api;
 
 import com.devit.checkmein.AbstractIT;
 import com.devit.checkmein.TestBuilderHelper;
-import com.devit.checkmein.api.exception.handler.ApiError;
 import com.devit.checkmein.api.model.CheckInBean;
 import com.devit.checkmein.api.model.CheckInStatus;
-import com.devit.checkmein.persistense.document.CheckInDocument;
+import com.devit.checkmein.api.model.ErrorResponse;
+import com.devit.checkmein.exception.UserAlreadyCheckedIn;
 import com.devit.checkmein.persistense.repository.CheckInRepository;
 import com.devit.checkmein.service.CheckMeInService;
-import com.devit.checkmein.service.exception.UserAlreadyCheckedIn;
-import io.swagger.annotations.Api;
-import org.dozer.DozerBeanMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,15 +53,15 @@ public class CheckMeInApiImplIT extends AbstractIT {
 		CheckInBean requestBody = TestBuilderHelper.buildCheckInBeanNullId();
 		checkMeInService.checkInUser(requestBody);
 
-		ApiError apiError = given()
+		ErrorResponse errorResponse = given()
 				.body(requestBody)
 				.when()
 				.post(CHECK_ME_IN_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.CONFLICT.value()))
-				.extract().body().as(ApiError.class);
+				.extract().body().as(ErrorResponse.class);
 
-		assertThat(apiError.getMessage()).containsIgnoringCase("is already checked in");
+		assertThat(errorResponse.getMessage()).containsIgnoringCase("is already checked in");
 	}
 
 	@Test
@@ -79,9 +76,9 @@ public class CheckMeInApiImplIT extends AbstractIT {
 	}
 
 	@Test
-	public void checkUserOutSuccessfully_test() {
+	public void checkUserOutSuccessfully_test() throws UserAlreadyCheckedIn {
 		CheckInBean checkInBean = TestBuilderHelper.buildCheckInBeanNullId();
-		checkInBean =  checkMeInService.checkInUser(checkInBean);
+		checkInBean = checkMeInService.checkInUser(checkInBean);
 
 		CheckInBean response = given()
 				.pathParam("checkInId", checkInBean.getId())
@@ -99,38 +96,38 @@ public class CheckMeInApiImplIT extends AbstractIT {
 
 	@Test
 	public void checkUserOutNullCheckinIdFailure_test() {
-		ApiError response = given()
+		ErrorResponse errorResponse = given()
 				.pathParam("checkInId", "nonExistingId")
 				.when()
 				.delete(CHECK_ME_OUT_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.NOT_FOUND.value()))
-				.extract().body().as(ApiError.class);
+				.extract().body().as(ErrorResponse.class);
 
-		assertThat(response).isNotNull();
-		assertThat(response.getMessage()).containsIgnoringCase("The ckeckin with id nonExistingId does not exists");
+		assertThat(errorResponse).isNotNull();
+		assertThat(errorResponse.getMessage()).containsIgnoringCase("The ckeckin with id nonExistingId does not exists");
 	}
 
 	@Test
-	public void checkUserOutThatHasAlreadyCheckedOutBeforeFailure_test() {
+	public void checkUserOutThatHasAlreadyCheckedOutBeforeFailure_test() throws UserAlreadyCheckedIn {
 		CheckInBean checkInBean = TestBuilderHelper.buildCheckInBeanNullId();
-		checkInBean =  checkMeInService.checkInUser(checkInBean);
+		checkInBean = checkMeInService.checkInUser(checkInBean);
 		repository.findById(checkInBean.getId())
 				.ifPresent(doc -> {
 					doc.setCheckInStatus(CheckInStatus.CHECKEDOUT);
 					repository.save(doc);
 				});
 
-		ApiError response = given()
+		ErrorResponse errorResponse = given()
 				.pathParam("checkInId", checkInBean.getId())
 				.when()
 				.delete(CHECK_ME_OUT_URI)
 				.then()
 				.statusCode(equalTo(HttpStatus.CONFLICT.value()))
-				.extract().body().as(ApiError.class);
+				.extract().body().as(ErrorResponse.class);
 
-		assertThat(response).isNotNull();
-		assertThat(response.getMessage())
+		assertThat(errorResponse).isNotNull();
+		assertThat(errorResponse.getMessage())
 				.containsIgnoringCase("The checkin with id " + checkInBean.getId() + " has been checked out already");
 	}
 }

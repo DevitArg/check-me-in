@@ -1,17 +1,15 @@
-package com.devit.checkmein.com.devit.checkmein.service.impl;
+package com.devit.checkmein.service.impl;
 
 import com.devit.checkmein.AbstractIT;
 import com.devit.checkmein.TestBuilderHelper;
 import com.devit.checkmein.TestDBHelper;
-import com.devit.checkmein.api.exception.handler.NotFoundException;
 import com.devit.checkmein.api.model.CheckInBean;
 import com.devit.checkmein.api.model.CheckInStatus;
+import com.devit.checkmein.exception.NotFoundException;
+import com.devit.checkmein.exception.UserAlreadyCheckedIn;
+import com.devit.checkmein.exception.UserAlreadyCheckedOut;
 import com.devit.checkmein.persistense.document.CheckInDocument;
 import com.devit.checkmein.persistense.repository.CheckInRepository;
-import com.devit.checkmein.service.exception.UserAlreadyCheckedIn;
-import com.devit.checkmein.service.exception.UserAlreadyCheckedOut;
-import com.devit.checkmein.service.impl.CheckMeInServiceImpl;
-import org.dozer.DozerBeanMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,7 +75,7 @@ public class CheckMeInServiceImplIT extends AbstractIT {
 	}
 
 	@Test
-	public void checkOutUserSuccessfully_test() {
+	public void checkOutUserSuccessfully_test() throws NotFoundException, UserAlreadyCheckedOut {
 		final String checkInId = testDBHelper.saveCheckInAndGet(false).getId();
 
 		CheckInBean checkInBean = checkMeInService.checkOutUser(checkInId);

@@ -37,10 +37,10 @@ public class WhoAreThereApiImplIT extends AbstractIT {
 
 		List<CheckInBean> beans = Arrays.asList(
 				given()
-				.get(WHO_ARE_THERE_URI)
-				.then()
-				.statusCode(equalTo(HttpStatus.OK.value()))
-				.extract().body().as(CheckInBean[].class));
+						.get(WHO_ARE_THERE_URI)
+						.then()
+						.statusCode(equalTo(HttpStatus.OK.value()))
+						.extract().body().as(CheckInBean[].class));
 
 		assertThat(beans).isNotEmpty();
 		assertThat(beans.size()).isEqualTo(inCount);

@@ -1,17 +1,15 @@
 package com.devit.checkmein.service.impl;
 
-import com.devit.checkmein.api.exception.handler.ApiError;
-import com.devit.checkmein.api.exception.handler.NotFoundException;
 import com.devit.checkmein.api.model.CheckInBean;
 import com.devit.checkmein.api.model.CheckInStatus;
+import com.devit.checkmein.exception.NotFoundException;
+import com.devit.checkmein.exception.UserAlreadyCheckedIn;
+import com.devit.checkmein.exception.UserAlreadyCheckedOut;
 import com.devit.checkmein.persistense.document.CheckInDocument;
 import com.devit.checkmein.persistense.repository.CheckInRepository;
 import com.devit.checkmein.service.CheckMeInService;
-import com.devit.checkmein.service.exception.UserAlreadyCheckedIn;
-import com.devit.checkmein.service.exception.UserAlreadyCheckedOut;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -35,9 +33,7 @@ public class CheckMeInServiceImpl implements CheckMeInService {
 			throw new IllegalArgumentException("CheckInBean must not be null");
 		}
 		if (isUserCheckedIn(checkInBean.getUserId())) {
-			ApiError apiError = new ApiError(HttpStatus.CONFLICT,
-					String.format("The user %s is already checked in", checkInBean.getUserId()));
-			throw new UserAlreadyCheckedIn(apiError);
+			throw new UserAlreadyCheckedIn(checkInBean.getUserId());
 		}
 		CheckInDocument checkInDocument = dozerBeanMapper.map(checkInBean, CheckInDocument.class);
 		checkInDocument.setCheckInStatus(CheckInStatus.CHECKEDIN);
@@ -54,12 +50,10 @@ public class CheckMeInServiceImpl implements CheckMeInService {
 			throw new IllegalArgumentException("CheckInBean must not be null");
 		}
 		CheckInDocument checkInDocument = checkInRepository.findById(checkInId)
-				.orElseThrow(() -> new NotFoundException(new ApiError(HttpStatus.NOT_FOUND,
-						String.format("The ckeckin with id %s does not exists", checkInId))));
+				.orElseThrow(() -> new NotFoundException(String.format("The ckeckin with id %s does not exists", checkInId)));
 
-		if(CheckInStatus.CHECKEDOUT.equals(checkInDocument.getCheckInStatus())) {
-			throw new UserAlreadyCheckedOut(new ApiError(HttpStatus.CONFLICT,
-					String.format("The checkin with id %s has been checked out already", checkInId)));
+		if (CheckInStatus.CHECKEDOUT.equals(checkInDocument.getCheckInStatus())) {
+			throw new UserAlreadyCheckedOut(checkInId);
 		}
 
 		checkInDocument.setCheckInStatus(CheckInStatus.CHECKEDOUT);

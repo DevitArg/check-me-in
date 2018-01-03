@@ -1,34 +1,41 @@
 package com.devit.checkmein.api.impl;
 
-import com.devit.checkmein.api.CheckMeApi;
+import com.devit.checkmein.api.CheckMeInApi;
 import com.devit.checkmein.api.model.CheckInBean;
+import com.devit.checkmein.exception.NotFoundException;
+import com.devit.checkmein.exception.UserAlreadyCheckedIn;
+import com.devit.checkmein.exception.UserAlreadyCheckedOut;
 import com.devit.checkmein.service.CheckMeInService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Lucas.Godoy on 13/11/17.
  */
-@RestController
-public class CheckMeInApiImpl implements CheckMeApi {
+@Component
+public class CheckMeInApiImpl implements CheckMeInApi {
 
 	@Autowired
 	private CheckMeInService checkMeInService;
 
 	@Override
-	public ResponseEntity<CheckInBean> userCheckOut(@PathVariable("checkInId") String checkInId) {
-		return new ResponseEntity<>(checkMeInService.checkOutUser(checkInId), HttpStatus.OK);
+	public Response userCheckOut(String checkInId) {
+		try {
+			return Response.ok(checkMeInService.checkOutUser(checkInId)).build();
+		} catch (UserAlreadyCheckedOut | NotFoundException e) {
+			throw e.throwRestException();
+		}
 	}
 
 	@Override
-	public ResponseEntity<CheckInBean> userCheckin(@Valid @RequestBody CheckInBean checkInBean) {
-		return new ResponseEntity<>(checkMeInService.checkInUser(checkInBean), HttpStatus.CREATED);
+	public Response userCheckin(CheckInBean checkInBean) {
+		try {
+			return Response.status(Response.Status.CREATED).entity(checkMeInService.checkInUser(checkInBean)).build();
+		} catch (UserAlreadyCheckedIn e) {
+			throw e.throwRestException();
+		}
 	}
 
 }

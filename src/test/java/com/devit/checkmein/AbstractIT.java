@@ -23,11 +23,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext
 public abstract class AbstractIT {
 
-	@LocalServerPort
-	int serverPort;
-
 	@Autowired
 	protected MongoTemplate mongoTemplate;
+	@LocalServerPort
+	int serverPort;
 
 	@Before
 	public void setUp() {
