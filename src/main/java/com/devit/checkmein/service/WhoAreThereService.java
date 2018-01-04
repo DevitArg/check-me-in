@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface WhoAreThereService {
 
-	public List<CheckInBean> whoAreThere();
+	List<CheckInBean> whoAreThere(String businessId);
 
 }

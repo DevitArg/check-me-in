@@ -14,6 +14,7 @@ public class TestBuilderHelper {
 		CheckInBean nullId = random(CheckInBean.class);
 		nullId.setId(null);
 		nullId.setCheckInStatus(CheckInStatus.CHECKEDIN);
+		nullId.setBusinessId("bar");
 		return nullId;
 	}
 
@@ -21,6 +22,7 @@ public class TestBuilderHelper {
 		CheckInBean nullId = random(CheckInBean.class);
 		nullId.setId(null);
 		nullId.setCheckInStatus(CheckInStatus.CHECKEDOUT);
+		nullId.setBusinessId("bar");
 		return nullId;
 	}
 

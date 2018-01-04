@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class WhoAreThereApiImplIT extends AbstractIT {
 
 	private final static String BASE_URI = "/checkMeIn/v1";
-	private final static String WHO_ARE_THERE_URI = BASE_URI + "/whoAreThere";
+	private final static String WHO_ARE_THERE_URI = BASE_URI + "/whoAreThere/{businessId}";
 
 	@Autowired
 	private WhoAreThereServiceImpl whoAreThereService;
@@ -37,6 +37,7 @@ public class WhoAreThereApiImplIT extends AbstractIT {
 
 		List<CheckInBean> beans = Arrays.asList(
 				given()
+						.pathParam("businessId", "bar")
 						.get(WHO_ARE_THERE_URI)
 						.then()
 						.statusCode(equalTo(HttpStatus.OK.value()))
@@ -54,6 +55,7 @@ public class WhoAreThereApiImplIT extends AbstractIT {
 
 		List<CheckInBean> beans = Arrays.asList(
 				given()
+						.pathParam("businessId", "bar")
 						.get(WHO_ARE_THERE_URI)
 						.then()
 						.statusCode(equalTo(HttpStatus.OK.value()))

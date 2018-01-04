@@ -16,6 +16,6 @@ public interface CheckInRepository extends MongoRepository<CheckInDocument, Stri
 
 	Optional<CheckInDocument> findById(String id);
 
-	List<CheckInDocument> findByCheckInStatus(CheckInStatus checkInStatus);
+	List<CheckInDocument> findByCheckInStatusAndBusinessId(CheckInStatus checkInStatus, String businessId);
 
 }

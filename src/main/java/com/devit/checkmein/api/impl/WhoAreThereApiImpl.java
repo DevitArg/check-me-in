@@ -17,8 +17,7 @@ public class WhoAreThereApiImpl implements WhoAreThereApi {
 	private WhoAreThereService whoAreThereService;
 
 	@Override
-	public Response whoAreThere() {
-		return Response.ok(whoAreThereService.whoAreThere()).build();
+	public Response whoAreThere(String businessId) {
+		return Response.ok(whoAreThereService.whoAreThere(businessId)).build();
 	}
-
 }

@@ -3,7 +3,6 @@ package com.devit.checkmein.service.impl;
 import com.devit.checkmein.AbstractIT;
 import com.devit.checkmein.TestDBHelper;
 import com.devit.checkmein.api.model.CheckInBean;
-import com.devit.checkmein.service.impl.WhoAreThereServiceImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,7 +27,7 @@ public class WhoAreThereServiceImplIT extends AbstractIT {
 		int outCount = 3;
 		testDBHelper.bulkCheckIn(inCount, outCount);
 
-		List<CheckInBean> beans = whoAreThereService.whoAreThere();
+		List<CheckInBean> beans = whoAreThereService.whoAreThere("bar");
 
 		assertThat(beans).isNotEmpty();
 		assertThat(beans.size()).isEqualTo(inCount);

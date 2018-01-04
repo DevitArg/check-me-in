@@ -17,6 +17,8 @@ public class CheckInDocument {
 	private String userId;
 	@Indexed
 	private String tableId;
+	@Indexed
+	private String businessId;
 	private CheckInStatus checkInStatus;
 
 }

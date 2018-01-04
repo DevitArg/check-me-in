@@ -26,8 +26,8 @@ public class WhoAreThereServiceImpl implements WhoAreThereService {
 
 
 	@Override
-	public List<CheckInBean> whoAreThere() {
-		List<CheckInDocument> documents = checkInRepository.findByCheckInStatus(CheckInStatus.CHECKEDIN);
+	public List<CheckInBean> whoAreThere(String businessId) {
+		List<CheckInDocument> documents = checkInRepository.findByCheckInStatusAndBusinessId(CheckInStatus.CHECKEDIN, businessId);
 		return documents
 				.stream()
 				.map(d -> dozerBeanMapper.map(d, CheckInBean.class))

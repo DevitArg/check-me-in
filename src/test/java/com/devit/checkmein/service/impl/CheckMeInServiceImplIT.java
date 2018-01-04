@@ -42,6 +42,7 @@ public class CheckMeInServiceImplIT extends AbstractIT {
 		assertThat(document.getId()).isEqualTo(id);
 		assertThat(document.getTableId()).isEqualTo(checkInBean.getTableId());
 		assertThat(document.getUserId()).isEqualTo(checkInBean.getUserId());
+		assertThat(document.getBusinessId()).isEqualTo(checkInBean.getBusinessId());
 	}
 
 	@Test

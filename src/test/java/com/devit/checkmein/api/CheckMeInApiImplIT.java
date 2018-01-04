@@ -23,7 +23,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 
 	private final static String BASE_URI = "/checkMeIn/v1";
 	private final static String CHECK_ME_IN_URI = BASE_URI + "/checkMe/in";
-	private final static String CHECK_ME_OUT_URI = BASE_URI + "/checkMe/out/id/{checkInId}";
+	private final static String CHECK_ME_OUT_URI = BASE_URI + "/checkMe/out/{checkInId}";
 
 	@Autowired
 	private CheckMeInService checkMeInService;
@@ -71,7 +71,7 @@ public class CheckMeInApiImplIT extends AbstractIT {
 				.body(requestBody)
 				.when()
 				.post(CHECK_ME_IN_URI)
-				.then()
+				.then().log().body(true)
 				.statusCode(equalTo(HttpStatus.BAD_REQUEST.value()));
 	}
 

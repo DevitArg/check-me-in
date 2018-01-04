@@ -44,7 +44,7 @@ paths:
           description: invalid input, object invalid
         409:
           description: user already checked in
-  /checkMe/out/id/{checkInId}:
+  /checkMe/out/{checkInId}:
     delete:
       tags:
       - checkMeIn
@@ -68,9 +68,13 @@ paths:
             $ref: '#/definitions/CheckInBean'
         400:
           description: invalid input, object invalid
+          schema:
+            $ref: '#/definitions/ErrorResponse'
         409:
           description: user already checked in
-  /whoAreThere:
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /whoAreThere/{businessId}:
     get:
       tags:
       - whoAreThere
@@ -81,6 +85,12 @@ paths:
       - application/json
       produces:
       - application/json
+      parameters:
+      - name: businessId
+        in: path
+        description: Business's ID to query
+        required: true
+        type: string
       responses:
         200:
           description: these are the users that have been checked in
@@ -94,12 +104,15 @@ definitions:
     required:
     - userId
     - tableId
+    - businessId
     properties:
       id:
         type: string
       userId:
         type: string
       tableId:
+        type: string
+      businessId:
         type: string
       checkInStatus:
           $ref: '#/definitions/CheckInStatus'
