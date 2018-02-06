@@ -1,3 +1,13 @@
 mongo:
   config:
     type: EMBEDDED
+    retryProperties:
+      retryBackOffTime: 5000
+      retryMaxAttempts: 3
+
+cxf:
+  path: /checkMeIn/v1
+
+security:
+  basic:
+    enabled: false

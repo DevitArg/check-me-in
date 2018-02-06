@@ -1,5 +1,0 @@
-mongo:
-  config:
-    uri: mongodb://checkMeIn:password@mongodb:27017/checkMeIn
-    type: INSTANCE
-    replicaSetName:

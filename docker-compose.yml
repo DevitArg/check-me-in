@@ -1,22 +1,47 @@
-version: '2.1'
+version: '3'
 
 services:
-    check-me-in:
-        container_name: check-me-in
-        hostname: check-me-in
-        image: dev-it/check-me-in:latest
-        expose:
-            - 8080
-        ports:
-            - 8080:8080
-        networks:
-            - devit-network
-        environment:
-            - spring.profiles.active=docker
-        links:
-            - mongodb:mongodb
-        depends_on:
-            - mongodb
-        logging:
-            driver: json-file
+  mongodb:
+    hostname: mongodb
+    container_name: mongodb
+    image: bitnami/mongodb:latest
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    volumes:
+      - /tmp/data/db:/data/db
+    environment:
+      - MONGODB_USERNAME=checkMeIn
+      - MONGODB_PASSWORD=password
+      - MONGODB_DATABASE=checkMeIn
+      - MONGODB_ROOT_PASSWORD=password
+    networks:
+      - devit-network
+
+  check-me-in:
+    container_name: check-me-in
+    hostname: check-me-in
+    image: dev-it/check-me-in:latest
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    networks:
+      - devit-network
+    environment:
+      - spring.profiles.active=docker
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - spring.cloud.config.label=master
+      - USER_CONFIGURATION_SERVER=uservice
+      - PASSWORD_CONFIGURATION_SERVER=password
+    links:
+      - mongodb:mongodb
+    depends_on:
+      - configuration-server
+      - zuul
+      - eureka
+      - mongodb
+    logging:
+      driver: json-file
 
