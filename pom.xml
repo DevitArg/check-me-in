@@ -5,11 +5,11 @@
 
     <groupId>com.devit</groupId>
     <artifactId>check-me-in</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>check-me-in</name>
-    <description>User checkin service</description>
+    <description>User checkin service.</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
