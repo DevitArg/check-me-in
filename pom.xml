@@ -28,7 +28,7 @@
         <apache.cxf.starter.version>3.1.11</apache.cxf.starter.version>
         <jackson.json.provider.version>2.8.6</jackson.json.provider.version>
 
-        <docker.image.prefix>dev-it</docker.image.prefix>
+        <docker.image.prefix>devitlabs</docker.image.prefix>
     </properties>
 
     <dependencyManagement>
@@ -227,7 +227,7 @@
                 </executions>
                 <configuration>
                     <forceTags>true</forceTags>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <imageName>${docker.image.prefix}-${project.artifactId}</imageName>
                     <imageTags>
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
